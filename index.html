@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Michele Vagnetti — Data Engineer. Building data pipelines, targeting Amsterdam.">
+  <title>Michele Vagnetti — Data Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+
+    /* ─── TOKENS ──────────────────────────────────────────────────────────── */
+    :root {
+      /* Light — white, confident, Bending Spoons energy */
+      --bg:         #ffffff;
+      --surface:    #f5f5f3;
+      --text:       #111110;
+      --muted:      #636360;
+      --subtle:     #adadaa;
+      --border:     #e6e6e3;
+      --accent:     #111110;
+      --accent-bg:  #111110;
+      --accent-fg:  #ffffff;
+      --tag-bg:     transparent;
+      --tag-color:  #636360;
+      --tag-border: #e6e6e3;
+      --radius:     4px;
+      --nav-h:      56px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        /* Dark — near-black, electric lime, figr-coded */
+        --bg:         #090909;
+        --surface:    #111110;
+        --text:       #edece8;
+        --muted:      #7a7975;
+        --subtle:     #484643;
+        --border:     #1e1e1c;
+        --accent:     #c4f74a;
+        --accent-bg:  #c4f74a;
+        --accent-fg:  #090909;
+        --tag-bg:     transparent;
+        --tag-color:  #7a7975;
+        --tag-border: #1e1e1c;
+      }
+    }
+
+    /* ─── RESET ───────────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+
+    /* ─── NAV ─────────────────────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: var(--nav-h);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(1.5rem, 5vw, 3.5rem);
+      transition: background .25s, border-color .25s;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: var(--bg);
+      border-bottom-color: var(--border);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .nav-logo {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700; font-size: .9rem; letter-spacing: .02em;
+    }
+    .nav-links { display: flex; gap: 2.25rem; }
+    .nav-links a {
+      font-size: .78rem; font-weight: 500; color: var(--muted);
+      letter-spacing: .02em; transition: color .15s;
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--text); }
+
+    /* ─── LAYOUT ──────────────────────────────────────────────────────────── */
+    .wrap {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding-left:  clamp(1.5rem, 5vw, 3.5rem);
+      padding-right: clamp(1.5rem, 5vw, 3.5rem);
+    }
+    section {
+      padding: 120px 0;
+      border-top: 1px solid var(--border);
+    }
+    #hero { border-top: none; }
+
+    /* ─── SECTION LABEL ───────────────────────────────────────────────────── */
+    .sec-label {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 3rem;
+    }
+    .sec-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .68rem; color: var(--subtle); letter-spacing: .06em;
+    }
+    .sec-name {
+      font-size: .68rem; font-weight: 600; color: var(--subtle);
+      letter-spacing: .13em; text-transform: uppercase;
+    }
+    .sec-line { flex: 1; height: 1px; background: var(--border); }
+
+    /* ─── HEADINGS ────────────────────────────────────────────────────────── */
+    h2 {
+      font-family: 'DM Sans', sans-serif;
+      font-size: clamp(2.25rem, 4.5vw, 3.75rem);
+      font-weight: 700; letter-spacing: -.025em; line-height: 1.1;
+      margin-bottom: 3.5rem;
+    }
+
+    /* ─── FADE-IN ─────────────────────────────────────────────────────────── */
+    .fi { opacity: 0; transform: translateY(22px); transition: opacity .6s ease, transform .6s ease; }
+    .fi.show { opacity: 1; transform: none; }
+    .fi-d1 { transition-delay: .08s; }
+    .fi-d2 { transition-delay: .16s; }
+    .fi-d3 { transition-delay: .24s; }
+
+    /* ─── HERO ────────────────────────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding-top: calc(var(--nav-h) + 3rem);
+      padding-bottom: 100px;
+    }
+    .hero-status {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .68rem; color: var(--muted);
+      letter-spacing: .1em; text-transform: uppercase;
+      display: flex; align-items: center; gap: .625rem;
+      margin-bottom: 2.5rem;
+    }
+    .status-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; }
+      50%      { opacity: .25; }
+    }
+    h1 {
+      font-family: 'DM Sans', sans-serif;
+      font-size: clamp(4.5rem, 13vw, 10rem);
+      font-weight: 700; letter-spacing: -.04em; line-height: .95;
+      margin-bottom: 2.25rem;
+    }
+    .hero-sub {
+      font-size: clamp(.9375rem, 1.5vw, 1.125rem);
+      color: var(--muted); line-height: 1.75;
+      max-width: 500px; margin-bottom: 3.25rem;
+      font-weight: 400;
+    }
+    .hero-links {
+      display: flex; gap: 2.25rem; flex-wrap: wrap; align-items: center;
+    }
+    .hero-link {
+      font-size: .875rem; font-weight: 500; color: var(--muted);
+      display: flex; align-items: center; gap: .375rem;
+      transition: color .15s, gap .18s;
+    }
+    .hero-link:hover { color: var(--text); gap: .6rem; }
+
+    /* ─── ABOUT ───────────────────────────────────────────────────────────── */
+    .about-grid {
+      display: grid; grid-template-columns: 1.15fr .85fr;
+      gap: 5rem; align-items: start;
+    }
+    .about-text p {
+      font-size: .9375rem; color: var(--muted);
+      line-height: 1.85; margin-bottom: 1.125rem;
+    }
+    .about-text p:last-child { margin-bottom: 0; }
+
+    .skills-list { display: flex; flex-direction: column; }
+    .skill-row {
+      display: flex; align-items: flex-start; gap: 1.25rem;
+      padding: 1rem 0; border-bottom: 1px solid var(--border);
+    }
+    .skill-row:first-child { border-top: 1px solid var(--border); }
+    .skill-cat {
+      font-size: .65rem; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--subtle);
+      min-width: 5.5rem; flex-shrink: 0; padding-top: .15rem;
+    }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: .35rem; }
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .68rem; color: var(--tag-color);
+      border: 1px solid var(--tag-border); background: var(--tag-bg);
+      padding: .2rem .55rem; border-radius: 3px;
+    }
+    .tag.hi { color: var(--text); border-color: var(--border); }
+
+    /* ─── EXPERIENCE ──────────────────────────────────────────────────────── */
+    .exp-list { display: flex; flex-direction: column; }
+    .exp-item {
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 1.5rem; padding: 2.25rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .exp-item:first-child { border-top: 1px solid var(--border); }
+    .exp-role { font-size: 1.0625rem; font-weight: 600; margin-bottom: .2rem; }
+    .exp-company { font-size: .875rem; color: var(--muted); margin-bottom: 1.125rem; }
+    .exp-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .68rem; color: var(--subtle);
+      white-space: nowrap; padding-top: .3rem; text-align: right;
+    }
+    .exp-bullets { display: flex; flex-direction: column; gap: .55rem; }
+    .exp-bullets li {
+      font-size: .875rem; color: var(--muted);
+      padding-left: 1.125rem; position: relative; line-height: 1.65;
+    }
+    .exp-bullets li::before {
+      content: '—'; position: absolute; left: 0;
+      color: var(--subtle); font-size: .75rem; top: .15rem;
+    }
+
+    /* ─── PROJECTS ────────────────────────────────────────────────────────── */
+    .project-list { display: flex; flex-direction: column; }
+    .project-item {
+      padding: 2.5rem 0 2.5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .project-item:first-child { border-top: 1px solid var(--border); }
+    .project-item::before {
+      content: ''; position: absolute;
+      left: 0; top: 2.5rem; bottom: 2.5rem;
+      width: 2px; background: var(--accent);
+      opacity: 0; transition: opacity .22s;
+    }
+    .project-item:hover::before { opacity: 1; }
+    .project-head {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; gap: 1.5rem; margin-bottom: .6rem;
+    }
+    .project-title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.25rem; font-weight: 600; letter-spacing: -.015em;
+    }
+    .project-chip {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .65rem; color: var(--subtle); white-space: nowrap; padding-top: .3rem;
+    }
+    .project-desc {
+      font-size: .9rem; color: var(--muted); line-height: 1.8; margin-bottom: 1rem;
+    }
+    .project-insight {
+      font-size: .8375rem; color: var(--muted); font-style: italic;
+      border-left: 1.5px solid var(--border); padding-left: .875rem;
+      line-height: 1.7; margin-bottom: 1.375rem;
+    }
+    .project-foot {
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: .75rem;
+    }
+    .stack-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0; }
+    .stack-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .68rem; color: var(--subtle);
+    }
+    .stack-tag::after { content: ' · '; color: var(--subtle); padding: 0 .2rem; }
+    .stack-tag:last-child::after { content: ''; }
+    .gh-link {
+      font-size: .8125rem; font-weight: 500; color: var(--muted);
+      display: flex; align-items: center; gap: .375rem;
+      transition: color .15s, gap .18s;
+    }
+    .gh-link:hover { color: var(--text); gap: .625rem; }
+
+    /* ─── EDUCATION ───────────────────────────────────────────────────────── */
+    .edu-list { display: flex; flex-direction: column; }
+    .edu-item {
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 1.5rem; padding: 2.25rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .edu-item:first-child { border-top: 1px solid var(--border); }
+    .edu-degree { font-size: 1rem; font-weight: 600; margin-bottom: .2rem; }
+    .edu-school { font-size: .875rem; color: var(--muted); margin-bottom: .875rem; }
+    .edu-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .68rem; color: var(--subtle);
+      white-space: nowrap; padding-top: .3rem; text-align: right;
+    }
+    .edu-note { font-size: .875rem; color: var(--muted); line-height: 1.75; }
+    .edu-note strong { color: var(--text); font-weight: 500; }
+
+    /* ─── LEARNING ────────────────────────────────────────────────────────── */
+    .learning-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--border); border-radius: var(--radius);
+    }
+    .learning-item {
+      padding: 2rem 1.75rem;
+      border-right: 1px solid var(--border);
+    }
+    .learning-item:last-child { border-right: none; }
+    .learning-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .65rem; color: var(--subtle); margin-bottom: 1.25rem;
+    }
+    .learning-title { font-size: .9375rem; font-weight: 600; margin-bottom: .5rem; }
+    .learning-desc { font-size: .8125rem; color: var(--muted); line-height: 1.7; }
+
+    /* ─── CONTACT ─────────────────────────────────────────────────────────── */
+    .contact-sub {
+      font-size: 1rem; color: var(--muted); line-height: 1.75;
+      max-width: 440px; margin-bottom: 2.75rem;
+    }
+    .contact-links { display: flex; gap: .875rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .65rem 1.375rem; border-radius: var(--radius);
+      font-size: .875rem; font-weight: 500;
+      transition: opacity .15s, transform .15s;
+    }
+    .btn:hover { opacity: .82; transform: translateY(-1px); }
+    .btn-solid { background: var(--accent-bg); color: var(--accent-fg); }
+    .btn-outline {
+      border: 1px solid var(--border); color: var(--muted); background: transparent;
+    }
+    .btn-outline:hover { border-color: var(--text); color: var(--text); opacity: 1; }
+
+    /* ─── FOOTER ──────────────────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem clamp(1.5rem, 5vw, 3.5rem);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: .5rem;
+    }
+    footer p {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .68rem; color: var(--subtle); letter-spacing: .04em;
+    }
+
+    /* ─── RESPONSIVE ──────────────────────────────────────────────────────── */
+    @media (max-width: 760px) {
+      .nav-links { display: none; }
+      section { padding: 80px 0; }
+      h1 { letter-spacing: -.04em; }
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .exp-item { grid-template-columns: 1fr; }
+      .exp-date { text-align: left; }
+      .edu-item { grid-template-columns: 1fr; }
+      .edu-date { text-align: left; }
+      .project-head { flex-direction: column; gap: .25rem; }
+      .project-item { padding-left: 1.25rem; }
+      .learning-grid { grid-template-columns: 1fr; }
+      .learning-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .learning-item:last-child { border-bottom: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ──────────────────────────────────────────────────────────────── -->
+  <nav id="nav">
+    <a class="nav-logo" href="#hero">MV</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main>
+
+    <!-- ── Hero ─────────────────────────────────────────────────────────── -->
+    <section id="hero">
+      <div class="wrap">
+        <div class="hero-status fi">
+          <span class="status-dot"></span>
+          Open to opportunities
+        </div>
+        <h1 class="fi fi-d1">Michele<br>Vagnetti</h1>
+        <p class="hero-sub fi fi-d2">
+          Data Engineer at Target Reply. I build pipelines that turn raw,
+          messy data into structured, reliable assets — SQL, Python, PySpark.
+          Looking for the next step in a modern DE stack.
+        </p>
+        <div class="hero-links fi fi-d3">
+          <a href="https://github.com/mchvgn" target="_blank" rel="noopener" class="hero-link">
+            GitHub →
+          </a>
+          <a href="https://www.linkedin.com/in/michele-vagnetti" target="_blank" rel="noopener" class="hero-link">
+            LinkedIn →
+          </a>
+          <a href="mailto:michelevagnetti.99@gmail.com" class="hero-link">
+            Email →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── About ────────────────────────────────────────────────────────── -->
+    <section id="about">
+      <div class="wrap">
+        <div class="sec-label fi">
+          <span class="sec-num">01</span>
+          <span class="sec-name">About</span>
+          <span class="sec-line"></span>
+        </div>
+        <h2 class="fi">Background<br>&amp; Skills</h2>
+        <div class="about-grid">
+          <div class="about-text fi">
+            <p>
+              I graduated in March 2026 with a Master's in Business Analytics from the University of Bologna,
+              where my thesis took me deep into graph databases and machine learning for fraud detection.
+              Before that I spent six months as a Data Engineer Intern at Workwize in Amsterdam — building
+              tools, ingestion pipelines, and alerting workflows used daily by non-technical teams.
+            </p>
+            <p>
+              Since October 2025 I've been at Target Reply in Turin, supporting large-scale data processing
+              and reporting with SAS and SQL on production workloads.
+            </p>
+            <p>
+              My background is in Economics &amp; Finance, which means I think about data in terms of the
+              decisions it needs to support — not just how to move it around. I'm comfortable taking
+              ownership of things early, fixing bugs same-day, and working in ticket-based cycles alongside
+              teams who depend on what I build.
+            </p>
+            <p>My next goal: a modern DE stack, end-to-end ownership of real pipelines, and a team that moves fast.</p>
+          </div>
+          <div class="skills-list fi fi-d1">
+            <div class="skill-row">
+              <span class="skill-cat">Languages</span>
+              <div class="skill-tags">
+                <span class="tag hi">Python</span>
+                <span class="tag hi">SQL</span>
+                <span class="tag">JavaScript</span>
+                <span class="tag">SAS</span>
+              </div>
+            </div>
+            <div class="skill-row">
+              <span class="skill-cat">Data</span>
+              <div class="skill-tags">
+                <span class="tag hi">PySpark</span>
+                <span class="tag hi">Parquet</span>
+                <span class="tag hi">SQLite</span>
+                <span class="tag hi">Neo4j</span>
+              </div>
+            </div>
+            <div class="skill-row">
+              <span class="skill-cat">Tooling</span>
+              <div class="skill-tags">
+                <span class="tag hi">Git / GitHub</span>
+                <span class="tag hi">Docker</span>
+                <span class="tag hi">Retool</span>
+                <span class="tag">Jira / Linear</span>
+              </div>
+            </div>
+            <div class="skill-row">
+              <span class="skill-cat">Domain</span>
+              <div class="skill-tags">
+                <span class="tag">Logistics</span>
+                <span class="tag">Finance</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Experience ────────────────────────────────────────────────────── -->
+    <section id="experience">
+      <div class="wrap">
+        <div class="sec-label fi">
+          <span class="sec-num">02</span>
+          <span class="sec-name">Experience</span>
+          <span class="sec-line"></span>
+        </div>
+        <h2 class="fi">Work History</h2>
+        <div class="exp-list">
+
+          <div class="exp-item fi">
+            <div>
+              <p class="exp-role">Data Engineer</p>
+              <p class="exp-company">Target Reply · Turin, Italy</p>
+              <ul class="exp-bullets">
+                <li>Supporting large-scale data processing and reporting solutions using SAS and SQL on production workloads.</li>
+                <li>Maintaining systems with real reliability requirements — daily exposure to the discipline of keeping things other people depend on running.</li>
+              </ul>
+            </div>
+            <span class="exp-date">Oct 2025 — Present</span>
+          </div>
+
+          <div class="exp-item fi fi-d1">
+            <div>
+              <p class="exp-role">Data Engineer Intern</p>
+              <p class="exp-company">Workwize · Amsterdam, Netherlands</p>
+              <ul class="exp-bullets">
+                <li>Built and maintained internal tools on Retool, writing backend logic in JavaScript and SQL against the company database and integrating with internal and external services via APIs.</li>
+                <li>Completely redesigned the delivery management tool — rethought the UX and data model from scratch, resulting in a solution that genuinely made end users' jobs easier.</li>
+                <li>Built ingestion and alerting workflows: validated incoming data, applied transformations, persisted it, and notified stakeholders when something required attention.</li>
+                <li>Resolved bug reports from internal teams on a same-day turnaround on tools in active daily use.</li>
+                <li>Worked in project cycles tracked in Jira and Linear, with full ownership and accountability for shipped features.</li>
+              </ul>
+            </div>
+            <span class="exp-date">Feb 2025 — Aug 2025</span>
+          </div>
+
+          <div class="exp-item fi fi-d2">
+            <div>
+              <p class="exp-role">Freelance Python Developer</p>
+              <p class="exp-company">Self-employed · Remote, Italy</p>
+              <ul class="exp-bullets">
+                <li>Delivered Python automation solutions including API-based tools for multi-platform social media publishing and performance tracking.</li>
+                <li>Built a web scraping application with a Tkinter GUI for automated financial data extraction and Excel reporting.</li>
+              </ul>
+            </div>
+            <span class="exp-date">Sep 2024 — Nov 2024</span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Projects ──────────────────────────────────────────────────────── -->
+    <section id="projects">
+      <div class="wrap">
+        <div class="sec-label fi">
+          <span class="sec-num">03</span>
+          <span class="sec-name">Projects</span>
+          <span class="sec-line"></span>
+        </div>
+        <h2 class="fi">Personal Work</h2>
+        <div class="project-list">
+
+          <div class="project-item fi">
+            <div class="project-head">
+              <span class="project-title">AML Detection on Synthetic Transaction Network</span>
+              <span class="project-chip">Thesis · 2026</span>
+            </div>
+            <p class="project-desc">
+              End-to-end fraud detection pipeline on a synthetic financial transaction dataset in an
+              anti-money laundering context. Modelled accounts and transactions as a graph in Neo4j,
+              wrote Cypher queries to extract graph-derived features, and fed them into machine learning
+              classifiers including XGBoost to detect suspicious transaction patterns.
+            </p>
+            <p class="project-insight">
+              The hardest part: identifying and fixing label leakage caused by graph-neighbour propagation —
+              a subtle issue where transaction features were inadvertently encoding information from neighbouring
+              nodes that wouldn't be available at inference time. Resolving it required rethinking both the
+              feature engineering logic and the train-test split strategy from scratch.
+            </p>
+            <div class="project-foot">
+              <div class="stack-row">
+                <span class="stack-tag">Python</span>
+                <span class="stack-tag">Neo4j</span>
+                <span class="stack-tag">Cypher</span>
+                <span class="stack-tag">scikit-learn</span>
+                <span class="stack-tag">XGBoost</span>
+              </div>
+              <a href="https://github.com/mchvgn/Tesi_Magistrale" target="_blank" rel="noopener" class="gh-link">
+                View on GitHub →
+              </a>
+            </div>
+          </div>
+
+          <div class="project-item fi fi-d1">
+            <div class="project-head">
+              <span class="project-title">Weather Data Pipeline &amp; Analytics</span>
+              <span class="project-chip">Personal · 2025</span>
+            </div>
+            <p class="project-desc">
+              End-to-end pipeline that collects, stores, and analyses hourly weather data from the
+              OpenWeather API across multiple cities. Raw JSON responses are cleaned, structured, and loaded
+              into a normalised SQLite schema with KPI generation and exploratory analysis on top.
+            </p>
+            <p class="project-insight">
+              Implemented robust incremental loading: a short backfill covering the last 6 hours runs on every
+              execution, a longer 72-hour backfill runs once daily to capture retroactive API corrections.
+              Upserts on hourly keys make reruns safe and idempotent.
+            </p>
+            <div class="project-foot">
+              <div class="stack-row">
+                <span class="stack-tag">Python</span>
+                <span class="stack-tag">SQLite</span>
+                <span class="stack-tag">OpenWeather API</span>
+                <span class="stack-tag">pandas</span>
+              </div>
+              <a href="https://github.com/mchvgn/openweather-pipeline" target="_blank" rel="noopener" class="gh-link">
+                View on GitHub →
+              </a>
+            </div>
+          </div>
+
+          <div class="project-item fi fi-d2">
+            <div class="project-head">
+              <span class="project-title">Retail Sales Pipeline (PySpark)</span>
+              <span class="project-chip">Personal · 2025</span>
+            </div>
+            <p class="project-desc">
+              PySpark pipeline to ingest, clean, deduplicate, and transform monthly retail sales CSV files
+              into partitioned Parquet datasets. Includes address parsing, timestamp normalisation, and
+              Window-function-based deduplication, plus an EDA notebook on the cleaned dataset.
+            </p>
+            <p class="project-insight">
+              The goal was to understand distributed data processing firsthand: where it differs from
+              single-machine pandas workflows, how columnar storage and partitioning work in practice,
+              and what the trade-offs are — not to solve a real business problem, but to build the muscle
+              memory before it matters.
+            </p>
+            <div class="project-foot">
+              <div class="stack-row">
+                <span class="stack-tag">Python</span>
+                <span class="stack-tag">PySpark</span>
+                <span class="stack-tag">Parquet</span>
+                <span class="stack-tag">Jupyter</span>
+              </div>
+              <a href="https://github.com/mchvgn/pyspark-retail-pipeline" target="_blank" rel="noopener" class="gh-link">
+                View on GitHub →
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Education ─────────────────────────────────────────────────────── -->
+    <section id="education">
+      <div class="wrap">
+        <div class="sec-label fi">
+          <span class="sec-num">04</span>
+          <span class="sec-name">Education</span>
+          <span class="sec-line"></span>
+        </div>
+        <h2 class="fi">Academic Background</h2>
+        <div class="edu-list">
+
+          <div class="edu-item fi">
+            <div>
+              <p class="edu-degree">MSc Business Analytics <span style="font-weight:400;font-size:.85em;color:var(--subtle)">(English)</span></p>
+              <p class="edu-school">University of Bologna</p>
+              <p class="edu-note">
+                <strong>Thesis:</strong> Anti-Money Laundering Detection on Synthetic Transaction Network via Graph-Derived Features.
+                Built an end-to-end AML detection pipeline: simulated transaction data with AMLSim, loaded the
+                network into Neo4j, extracted structural and proximity features via Cypher queries, and trained
+                four classifiers with distinct class-imbalance strategies.
+                Best model (XGBoost) reached ROC-AUC 0.906 on the held-out test set.
+              </p>
+            </div>
+            <span class="edu-date">Sep 2023 — Mar 2026</span>
+          </div>
+
+          <div class="edu-item fi fi-d1">
+            <div>
+              <p class="edu-degree">BSc Economics &amp; Finance <span style="font-weight:400;font-size:.85em;color:var(--subtle)">(English)</span></p>
+              <p class="edu-school">University of Bologna</p>
+              <p class="edu-note">
+                Foundation in financial and macroeconomic analysis. Developed the quantitative reasoning and
+                domain knowledge that now shapes how I think about data and the decisions it needs to support.
+              </p>
+            </div>
+            <span class="edu-date">Sep 2019 — Mar 2023</span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Learning ──────────────────────────────────────────────────────── -->
+    <section id="learning">
+      <div class="wrap">
+        <div class="sec-label fi">
+          <span class="sec-num">05</span>
+          <span class="sec-name">2026 Roadmap</span>
+          <span class="sec-line"></span>
+        </div>
+        <h2 class="fi">Currently Building Toward</h2>
+        <div class="learning-grid">
+          <div class="learning-item fi">
+            <p class="learning-num">01 / 03</p>
+            <p class="learning-title">Orchestration &amp; Transformation</p>
+            <p class="learning-desc">Apache Airflow for DAG-based scheduling, dbt for SQL-first transformation and data lineage — the two tools that anchor most modern DE stacks.</p>
+          </div>
+          <div class="learning-item fi fi-d1">
+            <p class="learning-num">02 / 03</p>
+            <p class="learning-title">Azure Cloud</p>
+            <p class="learning-desc">Azure Data Factory, Azure Data Lake Storage, and the Microsoft Fabric Analytics Engineer (DP-600) certification — the cloud layer that most enterprise DE stacks run on.</p>
+          </div>
+          <div class="learning-item fi fi-d2">
+            <p class="learning-num">03 / 03</p>
+            <p class="learning-title">End-to-End Pipelines</p>
+            <p class="learning-desc">Working through the DataTalks.Club DE Zoomcamp: Docker, Terraform, BigQuery, Spark, Kafka — building portfolio projects that demo the complete DE workflow.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Contact ───────────────────────────────────────────────────────── -->
+    <section id="contact">
+      <div class="wrap">
+        <div class="sec-label fi">
+          <span class="sec-num">06</span>
+          <span class="sec-name">Contact</span>
+          <span class="sec-line"></span>
+        </div>
+        <h2 class="fi">Let's talk.</h2>
+        <p class="contact-sub fi">
+          Open to Data Engineer roles — remote or on-site.
+          Reach out by email or connect on LinkedIn.
+        </p>
+        <div class="contact-links fi">
+          <a href="mailto:michelevagnetti.99@gmail.com" class="btn btn-solid">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+            Email me
+          </a>
+          <a href="https://www.linkedin.com/in/michele-vagnetti" target="_blank" rel="noopener" class="btn btn-outline">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn
+          </a>
+          <a href="https://github.com/mchvgn" target="_blank" rel="noopener" class="btn btn-outline">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Michele Vagnetti · Turin, Italy</p>
+    <p>(+39) 349 591 8663</p>
+  </footer>
+
+  <script>
+    // Nav scroll state
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 24);
+    }, { passive: true });
+
+    // Fade-in on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('show');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fi').forEach(el => observer.observe(el));
+
+    // Hero elements fire immediately
+    document.querySelectorAll('#hero .fi').forEach((el, i) => {
+      setTimeout(() => el.classList.add('show'), 80 + i * 80);
+    });
+
+    // Active nav link on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const navObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          navLinks.forEach(a => a.classList.remove('active'));
+          const link = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+          if (link) link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    sections.forEach(s => navObs.observe(s));
+  </script>
+
+</body>
+</html>
