@@ -533,13 +533,14 @@
             </div>
             <p class="project-desc">
               Fraud detection on a synthetic AML transaction dataset. Accounts and transactions live in a
-              Neo4j graph; I pulled features with Cypher and trained a few classifiers on them.
-              XGBoost came out on top at ROC-AUC 0.906.
+              Neo4j graph; I pulled features with Cypher and trained four classifiers, each with a different
+              imbalance strategy. The corrected pipeline lands at AUC 0.906 on the held-out set.
             </p>
             <p class="project-insight">
-              The hardest part was a sneaky label leak. Some features were quietly encoding labels from
-              neighbouring nodes the model wouldn't actually see at inference time. Fixing it meant
-              rebuilding both the feature pipeline and the train/test split.
+              The headline isn't the AUC. My first version scored F1 = 1.0, which was a red flag, not a result.
+              Chasing it down meant diagnosing three different forms of label leakage — the subtlest being
+              proximity features quietly anchored on test-set landmarks. Rebuilding the feature pipeline and
+              the train/test split to fix it became the actual contribution of the thesis.
             </p>
             <div class="project-foot">
               <div class="stack-row">
@@ -630,9 +631,10 @@
               <p class="edu-school">University of Bologna</p>
               <p class="edu-note">
                 <strong>Thesis:</strong> AML Detection on Synthetic Transaction Network via Graph-Derived Features.
-                Generated the data with AMLSim, loaded it into Neo4j, pulled features with Cypher,
-                and trained four classifiers (each handling the class imbalance differently).
-                Best was XGBoost, ROC-AUC 0.906 on the held-out test set.
+                Generated the data with AMLSim, loaded it into Neo4j, pulled features with Cypher, and trained
+                four classifiers. The contribution was diagnosing and removing three forms of label leakage
+                that were inflating the first version's scores; the corrected pipeline lands at AUC 0.906
+                on the held-out test set.
               </p>
             </div>
             <span class="edu-date">Sep 2023 — Mar 2026</span>
