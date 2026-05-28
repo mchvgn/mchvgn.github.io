@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Michele Vagnetti — Engineer working across data pipelines, machine learning, and Python.">
+  <meta name="description" content="Michele Vagnetti — Data Engineer. Pipelines, ML, Python.">
   <title>Michele Vagnetti — Data &amp; ML Engineer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -373,9 +373,9 @@
       <div class="wrap">
         <h1 class="fi">Michele<br>Vagnetti</h1>
         <p class="hero-sub fi fi-d1">
-          Data Engineer at Target Reply, with a background in machine learning and Python.
-          I build pipelines, ship services, and train models.
-          Open to new opportunities.
+          Data Engineer at Target Reply. Recent MSc in Business Analytics from Bologna,
+          thesis on graph ML for fraud detection. Freelance Python work before that.
+          Open to what's next.
         </p>
         <div class="hero-links fi fi-d2">
           <a href="https://github.com/mchvgn" target="_blank" rel="noopener" class="hero-link">
@@ -403,22 +403,23 @@
         <div class="about-grid">
           <div class="about-text fi">
             <p>
-              I graduated in March 2026 with a Master's in Business Analytics from the University of Bologna,
-              where my thesis took me deep into graph databases and machine learning for fraud detection.
-              Before that I spent six months as a Data Engineer Intern at Workwize in Amsterdam — building
-              tools, ingestion pipelines, and alerting workflows used daily by non-technical teams.
+              I finished my Master's in Business Analytics at Bologna in March 2026.
+              Thesis: graph ML for fraud detection (Neo4j, Cypher, XGBoost).
+              The interesting part was the label leakage I had to chase down once the test set was held out.
+              Before that, six months as a Data Engineer intern at Workwize in Amsterdam,
+              building the internal tools and ingestion workflows the ops team used every day.
             </p>
             <p>
-              Since October 2025 I've been at Target Reply in Turin, supporting large-scale data processing
-              and reporting with SAS and SQL on production workloads.
+              I've been at Target Reply in Turin since October 2025.
+              Mostly SAS and SQL on production batch jobs.
+              Not glamorous, but it's where you learn what "production" actually means.
             </p>
             <p>
-              My background is in Economics &amp; Finance, which means I think about data in terms of the
-              decisions it needs to support — not just how to move it around. I'm comfortable taking
-              ownership of things early, fixing bugs same-day, and working in ticket-based cycles alongside
-              teams who depend on what I build.
+              My undergrad was in Economics &amp; Finance. I still start most data questions the same way:
+              what's this for, who's going to make a decision from it. That makes me a decent fit for
+              ticket-based work with non-technical teammates. Things get fixed the same day they break.
             </p>
-            <p>My next goal: end-to-end ownership of real systems in a team that moves fast.</p>
+            <p>What I want next: own real pipelines end-to-end, somewhere I'll get pushed.</p>
           </div>
           <div class="skills-list fi fi-d1">
             <div class="skill-row">
@@ -476,8 +477,8 @@
               <p class="exp-role">Data Engineer</p>
               <p class="exp-company">Target Reply · Turin, Italy</p>
               <ul class="exp-bullets">
-                <li>Supporting large-scale data processing and reporting solutions using SAS and SQL on production workloads.</li>
-                <li>Maintaining systems with real reliability requirements — daily exposure to the discipline of keeping things other people depend on running.</li>
+                <li>Day-to-day SAS and SQL on production batch reporting.</li>
+                <li>These are systems people downstream actually depend on. You don't get to push a fix and hope.</li>
               </ul>
             </div>
             <span class="exp-date">Oct 2025 — Present</span>
@@ -488,11 +489,11 @@
               <p class="exp-role">Data Engineer Intern</p>
               <p class="exp-company">Workwize · Amsterdam, Netherlands</p>
               <ul class="exp-bullets">
-                <li>Built and maintained internal tools on Retool, writing backend logic in JavaScript and SQL against the company database and integrating with internal and external services via APIs.</li>
-                <li>Completely redesigned the delivery management tool — rethought the UX and data model from scratch, resulting in a solution that genuinely made end users' jobs easier.</li>
-                <li>Built ingestion and alerting workflows: validated incoming data, applied transformations, persisted it, and notified stakeholders when something required attention.</li>
-                <li>Resolved bug reports from internal teams on a same-day turnaround on tools in active daily use.</li>
-                <li>Worked in project cycles tracked in Jira and Linear, with full ownership and accountability for shipped features.</li>
+                <li>Built and maintained internal Retool tools. JavaScript and SQL backends, talking to the company DB and a bunch of external APIs.</li>
+                <li>Redesigned the delivery management tool from scratch, both the UI and the data model underneath. The ops team actually thanked me for it.</li>
+                <li>Built ingestion and alerting workflows. Data came in, got validated and transformed, landed in the DB; if something looked wrong, the right person got pinged.</li>
+                <li>Triaged bug reports from internal teams, usually same-day. The tools were in daily use; things couldn't sit.</li>
+                <li>Standard ticket-based cycles in Jira and Linear. I owned what I shipped.</li>
               </ul>
             </div>
             <span class="exp-date">Feb 2025 — Aug 2025</span>
@@ -503,8 +504,8 @@
               <p class="exp-role">Freelance Python Developer</p>
               <p class="exp-company">Self-employed · Remote, Italy</p>
               <ul class="exp-bullets">
-                <li>Delivered Python automation solutions including API-based tools for multi-platform social media publishing and performance tracking.</li>
-                <li>Built a web scraping application with a Tkinter GUI for automated financial data extraction and Excel reporting.</li>
+                <li>Python automation work for a couple of clients. One tool posted to several social platforms at once and tracked performance.</li>
+                <li>Built a Tkinter desktop app that scraped financial data on a schedule and dropped the results into an Excel report.</li>
               </ul>
             </div>
             <span class="exp-date">Sep 2024 — Nov 2024</span>
@@ -531,16 +532,14 @@
               <span class="project-chip">Thesis · 2026</span>
             </div>
             <p class="project-desc">
-              End-to-end fraud detection pipeline on a synthetic financial transaction dataset in an
-              anti-money laundering context. Modelled accounts and transactions as a graph in Neo4j,
-              wrote Cypher queries to extract graph-derived features, and fed them into machine learning
-              classifiers including XGBoost to detect suspicious transaction patterns.
+              Fraud detection on a synthetic AML transaction dataset. Accounts and transactions live in a
+              Neo4j graph; I pulled features with Cypher and trained a few classifiers on them.
+              XGBoost came out on top at ROC-AUC 0.906.
             </p>
             <p class="project-insight">
-              The hardest part: identifying and fixing label leakage caused by graph-neighbour propagation —
-              a subtle issue where transaction features were inadvertently encoding information from neighbouring
-              nodes that wouldn't be available at inference time. Resolving it required rethinking both the
-              feature engineering logic and the train-test split strategy from scratch.
+              The hardest part was a sneaky label leak. Some features were quietly encoding labels from
+              neighbouring nodes the model wouldn't actually see at inference time. Fixing it meant
+              rebuilding both the feature pipeline and the train/test split.
             </p>
             <div class="project-foot">
               <div class="stack-row">
@@ -562,14 +561,13 @@
               <span class="project-chip">Personal · 2025</span>
             </div>
             <p class="project-desc">
-              End-to-end pipeline that collects, stores, and analyses hourly weather data from the
-              OpenWeather API across multiple cities. Raw JSON responses are cleaned, structured, and loaded
-              into a normalised SQLite schema with KPI generation and exploratory analysis on top.
+              Hourly weather pulls from the OpenWeather API across a few cities. Raw JSON gets parsed
+              into a normalised SQLite schema; there's a notebook on top for KPIs and exploration.
             </p>
             <p class="project-insight">
-              Implemented robust incremental loading: a short backfill covering the last 6 hours runs on every
-              execution, a longer 72-hour backfill runs once daily to capture retroactive API corrections.
-              Upserts on hourly keys make reruns safe and idempotent.
+              The incremental loading is the bit I'm happy with. Every run backfills the last 6 hours; once
+              a day there's a longer 72-hour pass to catch any retroactive corrections from the API.
+              Upserts on hourly keys mean reruns don't break anything.
             </p>
             <div class="project-foot">
               <div class="stack-row">
@@ -590,15 +588,13 @@
               <span class="project-chip">Personal · 2025</span>
             </div>
             <p class="project-desc">
-              PySpark pipeline to ingest, clean, deduplicate, and transform monthly retail sales CSV files
-              into partitioned Parquet datasets. Includes address parsing, timestamp normalisation, and
-              Window-function-based deduplication, plus an EDA notebook on the cleaned dataset.
+              Monthly retail sales CSVs in, partitioned Parquet out. Along the way: address parsing,
+              timestamp normalisation, Window-function dedup. There's an EDA notebook on the cleaned data.
             </p>
             <p class="project-insight">
-              The goal was to understand distributed data processing firsthand: where it differs from
-              single-machine pandas workflows, how columnar storage and partitioning work in practice,
-              and what the trade-offs are — not to solve a real business problem, but to build the muscle
-              memory before it matters.
+              I built this to learn, not to ship. The point was feeling where distributed processing
+              actually differs from pandas, and what partitioning and Parquet are like in practice.
+              Better to figure that out on a toy dataset.
             </p>
             <div class="project-foot">
               <div class="stack-row">
@@ -633,11 +629,10 @@
               <p class="edu-degree">MSc Business Analytics <span style="font-weight:400;font-size:.85em;color:var(--subtle)">(English)</span></p>
               <p class="edu-school">University of Bologna</p>
               <p class="edu-note">
-                <strong>Thesis:</strong> Anti-Money Laundering Detection on Synthetic Transaction Network via Graph-Derived Features.
-                Built an end-to-end AML detection pipeline: simulated transaction data with AMLSim, loaded the
-                network into Neo4j, extracted structural and proximity features via Cypher queries, and trained
-                four classifiers with distinct class-imbalance strategies.
-                Best model (XGBoost) reached ROC-AUC 0.906 on the held-out test set.
+                <strong>Thesis:</strong> AML Detection on Synthetic Transaction Network via Graph-Derived Features.
+                Generated the data with AMLSim, loaded it into Neo4j, pulled features with Cypher,
+                and trained four classifiers (each handling the class imbalance differently).
+                Best was XGBoost, ROC-AUC 0.906 on the held-out test set.
               </p>
             </div>
             <span class="edu-date">Sep 2023 — Mar 2026</span>
@@ -648,8 +643,8 @@
               <p class="edu-degree">BSc Economics &amp; Finance <span style="font-weight:400;font-size:.85em;color:var(--subtle)">(English)</span></p>
               <p class="edu-school">University of Bologna</p>
               <p class="edu-note">
-                Foundation in financial and macroeconomic analysis. Developed the quantitative reasoning and
-                domain knowledge that now shapes how I think about data and the decisions it needs to support.
+                Macroeconomics, finance, statistics. Useful grounding for the way I read data now:
+                why a number matters comes before how to compute it.
               </p>
             </div>
             <span class="edu-date">Sep 2019 — Mar 2023</span>
@@ -664,25 +659,25 @@
       <div class="wrap">
         <div class="sec-label fi">
           <span class="sec-num">05</span>
-          <span class="sec-name">2026 Roadmap</span>
+          <span class="sec-name">Learning</span>
           <span class="sec-line"></span>
         </div>
-        <h2 class="fi">Currently Building Toward</h2>
+        <h2 class="fi">What I'm Learning Now</h2>
         <div class="learning-grid">
           <div class="learning-item fi">
             <p class="learning-num">01 / 03</p>
             <p class="learning-title">dbt with Snowflake &amp; AWS</p>
-            <p class="learning-desc">Currently working through a course on dbt integrated with Snowflake and AWS — building out the modern analytics-engineering layer of the DE stack.</p>
+            <p class="learning-desc">Working through a dbt course right now, with Snowflake and AWS underneath. The analytics-engineering side of the stack I haven't touched at work yet.</p>
           </div>
           <div class="learning-item fi fi-d1">
             <p class="learning-num">02 / 03</p>
             <p class="learning-title">Cloud platforms</p>
-            <p class="learning-desc">Azure is on the learning path — extending cloud breadth beyond AWS, with the Microsoft Fabric Analytics Engineer (DP-600) certification as a possible target.</p>
+            <p class="learning-desc">Azure is next on the list. Useful complement to AWS; the DP-600 (Fabric Analytics Engineer) cert is one I might go for.</p>
           </div>
           <div class="learning-item fi fi-d2">
             <p class="learning-num">03 / 03</p>
             <p class="learning-title">DE Zoomcamp</p>
-            <p class="learning-desc">Working through the DataTalks.Club Data Engineering Zoomcamp gradually — Docker, Terraform, BigQuery, Spark, Kafka.</p>
+            <p class="learning-desc">DataTalks.Club's Data Engineering Zoomcamp, in the background. Docker, Terraform, BigQuery, Spark, Kafka.</p>
           </div>
         </div>
       </div>
@@ -698,8 +693,8 @@
         </div>
         <h2 class="fi">Let's talk.</h2>
         <p class="contact-sub fi">
-          Open to new opportunities — remote or on-site.
-          Reach out by email or connect on LinkedIn.
+          Open to what's next, remote or on-site.
+          Email's fastest, or LinkedIn works.
         </p>
         <div class="contact-links fi">
           <a href="mailto:michelevagnetti.99@gmail.com" class="btn btn-solid">
