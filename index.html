@@ -356,7 +356,7 @@
 
   <!-- ── Nav ──────────────────────────────────────────────────────────────── -->
   <nav id="nav">
-    <a class="nav-logo" href="#hero">MV</a>
+    <a class="nav-logo" href="#" id="logoLink">MV</a>
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#experience">Experience</a></li>
@@ -733,6 +733,13 @@
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 24);
     }, { passive: true });
+
+    // Logo click → smooth scroll to top, no URL fragment
+    document.getElementById('logoLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      history.replaceState(null, '', location.pathname);
+    });
 
     // Fade-in on scroll
     const observer = new IntersectionObserver((entries) => {
