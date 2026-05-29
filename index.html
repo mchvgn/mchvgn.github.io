@@ -60,6 +60,19 @@
     a { color: inherit; text-decoration: none; }
     ul { list-style: none; }
 
+    /* Inline prose links — subtle underline, darkens on hover */
+    .inline-link {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-decoration-color: var(--border);
+      text-underline-offset: 3px;
+      transition: color .15s, text-decoration-color .18s;
+    }
+    .inline-link:hover {
+      color: var(--text);
+      text-decoration-color: var(--text);
+    }
+
     /* ─── NAV ─────────────────────────────────────────────────────────────── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 200;
@@ -373,7 +386,8 @@
       <div class="wrap">
         <h1 class="fi">Michele<br>Vagnetti</h1>
         <p class="hero-sub fi fi-d1">
-          Data Engineer at Target Reply. Recent MSc in Business Analytics from Bologna,
+          Data Engineer at <a class="inline-link" href="https://www.reply.com/target-reply/en" target="_blank" rel="noopener">Target Reply</a>.
+          Recent <a class="inline-link" href="https://corsi.unibo.it/2cycle/BusinessAnalytics" target="_blank" rel="noopener">MSc in Business Analytics</a> from Bologna,
           thesis on graph ML for fraud detection. Freelance Python work before that.
           Open to what's next.
         </p>
@@ -403,19 +417,19 @@
         <div class="about-grid">
           <div class="about-text fi">
             <p>
-              I finished my Master's in Business Analytics at Bologna in March 2026.
+              I finished my <a class="inline-link" href="https://corsi.unibo.it/2cycle/BusinessAnalytics" target="_blank" rel="noopener">Master's in Business Analytics</a> at Bologna in March 2026.
               Thesis: graph ML for fraud detection (Neo4j, Cypher, XGBoost).
               The interesting part was the label leakage I had to chase down once the test set was held out.
-              Before that, six months as a Data Engineer intern at Workwize in Amsterdam,
+              Before that, six months as a Data Engineer intern at <a class="inline-link" href="https://www.goworkwize.com/" target="_blank" rel="noopener">Workwize</a> in Amsterdam,
               building the internal tools and ingestion workflows the ops team used every day.
             </p>
             <p>
-              I've been at Target Reply in Turin since October 2025.
+              I've been at <a class="inline-link" href="https://www.reply.com/target-reply/en" target="_blank" rel="noopener">Target Reply</a> in Turin since October 2025.
               Mostly SAS and SQL on production batch jobs.
               Not glamorous, but it's where you learn what "production" actually means.
             </p>
             <p>
-              My undergrad was in Economics &amp; Finance: three years of macro, micro, finance, and
+              My undergrad was in <a class="inline-link" href="https://corsi.unibo.it/1cycle/EconomicsFinance" target="_blank" rel="noopener">Economics &amp; Finance</a>: three years of macro, micro, finance, and
               statistics. That's where the quantitative reflexes come from. It's also why I tend to read
               a dataset by asking what decision sits underneath it. Economics trains you to care about
               why a number matters before how to compute it.
@@ -480,7 +494,7 @@
           <div class="exp-item fi">
             <div>
               <p class="exp-role">Data Engineer</p>
-              <p class="exp-company">Target Reply · Turin, Italy</p>
+              <p class="exp-company"><a class="inline-link" href="https://www.reply.com/target-reply/en" target="_blank" rel="noopener">Target Reply</a> · Turin, Italy</p>
               <ul class="exp-bullets">
                 <li>Day-to-day SAS and SQL on production batch reporting.</li>
                 <li>These are systems people downstream actually depend on. You don't get to push a fix and hope.</li>
@@ -492,7 +506,7 @@
           <div class="exp-item fi fi-d1">
             <div>
               <p class="exp-role">Data Engineer Intern</p>
-              <p class="exp-company">Workwize · Amsterdam, Netherlands</p>
+              <p class="exp-company"><a class="inline-link" href="https://www.goworkwize.com/" target="_blank" rel="noopener">Workwize</a> · Amsterdam, Netherlands</p>
               <ul class="exp-bullets">
                 <li>Built and maintained internal Retool tools. JavaScript and SQL backends, talking to the company DB and a bunch of external APIs.</li>
                 <li>Redesigned the delivery management tool from scratch, both the UI and the data model underneath. The ops team actually thanked me for it.</li>
@@ -632,8 +646,8 @@
 
           <div class="edu-item fi">
             <div>
-              <p class="edu-degree">MSc Business Analytics <span style="font-weight:400;font-size:.85em;color:var(--subtle)">(English)</span></p>
-              <p class="edu-school">University of Bologna</p>
+              <p class="edu-degree"><a class="inline-link" href="https://corsi.unibo.it/2cycle/BusinessAnalytics" target="_blank" rel="noopener">MSc Business Analytics</a> <span style="font-weight:400;font-size:.85em;color:var(--subtle)">(English)</span></p>
+              <p class="edu-school"><a class="inline-link" href="https://www.unibo.it/it" target="_blank" rel="noopener">University of Bologna</a></p>
               <p class="edu-note">
                 <strong>Thesis:</strong> AML Detection on Synthetic Transaction Network via Graph-Derived Features.
                 Generated the data with AMLSim, loaded it into Neo4j, pulled features with Cypher, and trained
@@ -647,8 +661,8 @@
 
           <div class="edu-item fi fi-d1">
             <div>
-              <p class="edu-degree">BSc Economics &amp; Finance <span style="font-weight:400;font-size:.85em;color:var(--subtle)">(English)</span></p>
-              <p class="edu-school">University of Bologna</p>
+              <p class="edu-degree"><a class="inline-link" href="https://corsi.unibo.it/1cycle/EconomicsFinance" target="_blank" rel="noopener">BSc Economics &amp; Finance</a> <span style="font-weight:400;font-size:.85em;color:var(--subtle)">(English)</span></p>
+              <p class="edu-school"><a class="inline-link" href="https://www.unibo.it/it" target="_blank" rel="noopener">University of Bologna</a></p>
               <p class="edu-note">
                 Macroeconomics, microeconomics, finance, and statistics. What I studied before moving
                 into analytics.
