@@ -150,13 +150,17 @@
       padding-top: calc(var(--nav-h) + 3rem);
       padding-bottom: 80px;
     }
+    #hero .wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
     .hero-photo {
-      width: 160px; height: 160px;
-      border-radius: 20px;
+      width: 240px; height: 240px;
+      border-radius: 50%;
       overflow: hidden;
-      border: 1px solid var(--border);
       margin-bottom: 2.5rem;
-      background: var(--surface);
     }
     .hero-photo img {
       width: 100%; height: 100%;
@@ -393,9 +397,9 @@
         </div>
         <h1 class="fi fi-d1">Hello, I'm Michele</h1>
         <p class="hero-sub fi fi-d2">
-          Data Engineer at Target Reply. Graduated from the MSc in Business
-          Analytics from Bologna, with a thesis on fraud detection via classifiers
-          trained on graph-derived features. Open to what's next.
+          Data Engineer at Target Reply.<br>
+          Graduated from the MSc in Business Analytics from Bologna, with a thesis on fraud detection via classifiers trained on graph-derived features.<br>
+          Open to what's next.
         </p>
       </div>
     </section>
